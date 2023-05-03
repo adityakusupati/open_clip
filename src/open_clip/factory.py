@@ -116,6 +116,7 @@ def create_model(
         force_image_size: Optional[Union[int, Tuple[int, int]]] = None,
         pretrained_image: bool = False,
         pretrained_hf: bool = True,
+        mrl_dims: int = 1,
         cache_dir: Optional[str] = None,
         output_dict: Optional[bool] = None,
         require_pretrained: bool = False,
@@ -189,9 +190,9 @@ def create_model(
             if "coca" in model_name:
                 model = CoCa(**model_cfg, cast_dtype=cast_dtype)
             else:
-                model = CustomTextCLIP(**model_cfg, cast_dtype=cast_dtype)
+                model = CustomTextCLIP(**model_cfg, mrl_dims=mrl_dims, cast_dtype=cast_dtype)
         else:
-            model = CLIP(**model_cfg, cast_dtype=cast_dtype)
+            model = CLIP(**model_cfg, mrl_dims=mrl_dims, cast_dtype=cast_dtype)
 
         pretrained_loaded = False
         if pretrained:
@@ -283,6 +284,7 @@ def create_model_and_transforms(
         force_image_size: Optional[Union[int, Tuple[int, int]]] = None,
         pretrained_image: bool = False,
         pretrained_hf: bool = True,
+        mrl_dims: int = 1,
         image_mean: Optional[Tuple[float, ...]] = None,
         image_std: Optional[Tuple[float, ...]] = None,
         aug_cfg: Optional[Union[Dict[str, Any], AugmentationCfg]] = None,
@@ -301,6 +303,7 @@ def create_model_and_transforms(
         force_image_size=force_image_size,
         pretrained_image=pretrained_image,
         pretrained_hf=pretrained_hf,
+        mrl_dims=mrl_dims,
         cache_dir=cache_dir,
         output_dict=output_dict,
     )

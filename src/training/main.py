@@ -228,6 +228,7 @@ def main(args):
         pretrained_image=args.pretrained_image,
         image_mean=args.image_mean,
         image_std=args.image_std,
+        mrl_dims=args.mrl_dims,
         aug_cfg=args.aug_cfg,
         output_dict=True,
     )

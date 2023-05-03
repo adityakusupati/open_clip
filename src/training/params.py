@@ -430,6 +430,12 @@ def parse_args(args):
         help='Replace the network linear layers from the bitsandbytes library. '
         'Allows int8 training/inference, etc.'
     )
+    parser.add_argument(
+        "--mrl-dims",
+        type=int,
+        default=1,
+        help="Number of granularities for MRL in an logarthmic fashion [8, 16, 32 ... 2048].",
+    )
     args = parser.parse_args(args)
 
     # If some params are not passed, we use the default values based on model name.

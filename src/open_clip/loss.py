@@ -119,7 +119,10 @@ class ClipLoss(nn.Module):
 
     def forward(self, image_features, text_features, logit_scale, output_dict=False):
         device = image_features.device
-        logits_per_image, logits_per_text = self.get_logits(image_features, text_features, logit_scale)
+
+        mrl_dims = logit_scale.shape[0]
+
+        logits_per_image, logits_per_text = self.get_logits(image_features, text_features, logit_scale[0])
 
         labels = self.get_ground_truth(device, logits_per_image.shape[0])
 
@@ -127,6 +130,15 @@ class ClipLoss(nn.Module):
             F.cross_entropy(logits_per_image, labels) +
             F.cross_entropy(logits_per_text, labels)
         ) / 2
+
+        for mrl_i in range(1, mrl_dims):
+            curr_rep_size = rep_size // (2**mrl_i)
+            logits_per_image, logits_per_text = self.get_logits(image_features[:. :curr_rep_size], text_features[:, :curr_rep_size], logit_scale[mrl_i])
+            total_loss += (
+                F.cross_entropy(logits_per_image, labels) +
+                F.cross_entropy(logits_per_text, labels)
+            ) / 2
+
 
         return {"contrastive_loss": total_loss} if output_dict else total_loss
 

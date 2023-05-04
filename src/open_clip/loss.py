@@ -133,7 +133,7 @@ class ClipLoss(nn.Module):
 
         for mrl_i in range(1, mrl_dims):
             curr_rep_size = rep_size // (2**mrl_i)
-            logits_per_image, logits_per_text = self.get_logits(image_features[:. :curr_rep_size], text_features[:, :curr_rep_size], logit_scale[mrl_i])
+            logits_per_image, logits_per_text = self.get_logits(image_features[:, :curr_rep_size], text_features[:, :curr_rep_size], logit_scale[mrl_i])
             total_loss += (
                 F.cross_entropy(logits_per_image, labels) +
                 F.cross_entropy(logits_per_text, labels)

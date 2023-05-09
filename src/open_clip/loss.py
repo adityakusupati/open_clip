@@ -121,6 +121,7 @@ class ClipLoss(nn.Module):
         device = image_features.device
 
         mrl_dims = logit_scale.shape[0]
+        rep_size = image_features.shape[1]
 
         logits_per_image, logits_per_text = self.get_logits(image_features, text_features, logit_scale[0])
 
